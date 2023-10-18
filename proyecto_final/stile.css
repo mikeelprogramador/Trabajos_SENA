@@ -1,0 +1,49 @@
+        /* Estilos para el menú superior */
+        .menu {
+            background-color: #FF5733; /* Color llamativo */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .menu-button {
+            background-color: #FF5733; /* Color de fondo del botón */
+            color: #fff; /* Texto blanco */
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .menu-options {
+            display: none;
+            position: absolute;
+            top: 65px;
+            right: 86.2%;
+            background-color: #FF5733; /* Color de fondo de las opciones del menú */
+        }
+
+        .menu-options button {
+            background-color: #FF5733; /* Color de fondo de los botones del menú */
+            color: #fff; /* Texto blanco */
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            width: 300px; /* Ancho de la barra de búsqueda */
+            height: 30px;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #fff; /* Fondo blanco para el avatar del usuario */
+        }
+
+        .cart-icon {
+            font-size: 24px;
+            color: #fff; /* Icono del carrito en blanco */
+        }
