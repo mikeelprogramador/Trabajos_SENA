@@ -196,7 +196,7 @@ function AptualizarSitios($nombre,$clave,$sitio)
     return $salida ;  //retorna 
 }
 
-function VisitarSitios($nombre,$clave,$invitacion)
+function VisitarSitios($nombre,$clave,)
 {
     $salida = ""; //se inicializa la salida 
 
@@ -204,15 +204,38 @@ function VisitarSitios($nombre,$clave,$invitacion)
 
     $buscar = Encontarpersona($nombre,$clave);
 
-    $sql  = "select sitio from personas where id='$buscar'"; // opera sql
+    $sql  = "select sitio, mensaje from personas where id='$buscar'"; // opera sql
  
     $resultado = $conexion->query($sql);//ejecuta la consulta.
 
        while($fila =$resultado->fetch_assoc())
        {
-        $salida.= "<a href='".$fila['sitio']."'>$invitacion<a/>";
+        $salida.= "<a href='".$fila['sitio']."'>".$fila['mensaje']."<a/>";//url de un sitio 
 
        }    
+
+        $conexion->close(); //para terminar la conexion con la base de datos
+    return $salida ;  //retorna 
+}
+function AptualizarInvitacion($nombre,$clave,$invitacion)
+{
+    $salida = ""; //se inicializa la salida 
+
+    $conexion = mysqli_connect('localhost','root','','db_pruebas'); //conexion a la base de datos.
+
+    $usuario = Encontarpersona($nombre,$clave);
+
+    $sql  = "update personas set mensaje ='$invitacion' where id='$usuario'"; // opera sql
+    //echo $sql;
+
+    $resultado = $conexion->query($sql);//ejecuta la consulta.
+
+        if($conexion->affected_rows > 0)//si a sucedio algun cambio en la base 
+        {
+            $salida .= "tu sitio se a cargado a:  "."$invitacion";//mensaje si se elimina de manera correcta
+        }else{
+            $salida .= "Error: 502";//mensaje en caso dee erro 
+        }
 
         $conexion->close(); //para terminar la conexion con la base de datos
     return $salida ;  //retorna 
