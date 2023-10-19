@@ -9,4 +9,7 @@ include("funciones.php");
 //echo funcionar();
 
 //para ver conexion 
-echo visualizar();
+//echo visualizar();
+
+//para ver conexion 
+echo visualizar1();
