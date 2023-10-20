@@ -2,19 +2,20 @@
 /**
  * Esta fucnion ConsultarPersona de encarga de consultar y mostra las personas 
  * de una base de datos.
- * @return texto los datos de las personas de una base de datos.
- * @param into un numero de identificar de la persona.
+ * @return text los datos de las personas de una base de datos.
+ * @param int un numero de identificar de la persona.
  * @param varchar password del usuario.
  * @param varchar un parametro para realizar el conteo, lo puede llenar con cualquier dato
+ * @param int limita la tabla.
  * tenga en cuanta que el parametro tiene que esta para que se realice el conteo.
  */
-function ConsultarPersona($u = null,$c = null,$p = null)
+function ConsultarPersona($u = null,$c = null,$p = null,$b = null)
 {
     $conexion = mysqli_connect('localhost','root','','db_pruebas');// conexion a la base de batos
     $salida = "";// inicialisar la variable de saliad 
-    $sql = "select * from personas ";// sql 
+    $sql = "select * from personas limit $b ";// sql 
     if($u != null )  $sql .= "where id='$u' ";//para mostrar un usuario
-    if( $u != null and $c != null )  $sql .= " and clave='$c'";//para mostrar un usuario con contraseña
+    if($u != null and $c != null )  $sql .= " and clave='$c'";//para mostrar un usuario con contraseña
     if($p != null) $sql = "select count(*) as contar from personas";//nuevo sql para hacer el conteo
     $resultado = $conexion->query($sql);//ejecucion del sql
     if($resultado->num_rows > 0)

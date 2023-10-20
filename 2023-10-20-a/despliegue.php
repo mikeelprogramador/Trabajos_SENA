@@ -3,5 +3,6 @@
 include("funciones.php");
 
 //funcion ConsultarPersona para mostra todas las personas de la base de datos 
-echo ConsultarPersona('5','yyy','');
+echo ConsultarPersona('','','','2');
 
+ 
