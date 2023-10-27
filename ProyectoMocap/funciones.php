@@ -79,8 +79,8 @@ function MostrarProductos($documento)
     {
         $id_pro = $fila['producto_id'];
         $salida .= "<hr>";
-        $salida .= $fila['producto_nombre']."     ";
-        $salida .= $fila['producto_precio']."     ";
+        $salida .= $fila['producto_nombre']."   <br>  ";
+        $salida .="Precio del producto: ". $fila['producto_precio']."   <br>   ";
         $salida .= "<a href='compra.php?pro=$id_pro&doc=$documento'>Comprar</a>";
         $salida .= "<br>";
         $salida .= "<hr>";
@@ -105,11 +105,11 @@ function DetallesProductos($id_pro,$documento)
 
         $salida .= "<hr>";
         $salida .= $fila['producto_nombre']."  <br>   ";
-        $salida .= $fila['producto_color']."   <br>  ";
-        $salida .= $fila['producto_caracteristicas']."    <br> ";
-        $salida .= $fila['producto_precio']."  <br>   ";
-        $salida .= "<a href='carritoDeCompras.php?pro=$id_pro&doc=$documento&des=ag'>Agregar</a>"."  <br>   ";
-        $salida .= "<a href='carritoDeCompras.php?pro=$id_pro&doc=$documento&des=co'>Comprar</a>";
+        $salida .="Color: ". $fila['producto_color']."   <br>  ";
+        $salida .="Caracteristicas: ". $fila['producto_caracteristicas']."    <br> ";
+        $salida .="Precio: ".$fila['producto_precio']."  <br>   ";
+        $salida .= "<a href='actualizacion.php?pro=$id_pro&doc=$documento&des=ag'>Agregar</a>"."  <br>   ";
+        $salida .= "<a href='actualizacion.php?pro=$id_pro&doc=$documento&des=co'>Comprar</a>";
 
         $salida .= "<br>";
         $salida .= "<hr>";
@@ -153,9 +153,7 @@ function actualizarcarro($documento)
             $conexion->close();
             return $salida; 
         }
-        
     }
-
 }
 /**
  * 
@@ -177,28 +175,87 @@ function MostrarNombre($documento)
     $conexion->close();
     return $salida; 
 }
-function AgregarProducto($id_pro)
+/**
+ * 
+ * 
+ */
+function MostrarCarrito($documento)
 {
-    $salida= ""; 
+    $salida = ""; 
     require("conexion.php");
-    $sql ="select * from tb_productos where producto_id='$id_pro'";
+    $sql = " select tb_productos.producto_nombre ,tb_productos.producto_color,";
+    $sql .= "tb_productos.producto_precio,tb_productos.producto_caracteristicas,estado_compra,id_compra ";
+    $sql .= " from tb_compra ";
+    $sql .= " inner join tb_productos on tb_compra.producto_id= tb_productos.producto_id ";
+    $sql .= " inner join tb_usuarios on tb_compra.id_usuario = tb_usuarios.id_usuario ";
+    $sql .= " inner join tb_carrito on tb_carrito.carrito_id = tb_compra.carrito_id ";
+    $sql .= " where tb_usuarios.id_usuario = '$documento' ";
+
     $consulta = $conexion->query($sql);
     while($fila = $consulta->fetch_assoc())
     {
-
         $salida .= "<hr>";
-        $salida .= $fila['producto_nombre']."  <br>   ";
-        $salida .= $fila['producto_color']."   <br>  ";
-        $salida .= $fila['producto_caracteristicas']."    <br> ";
-        $salida .= $fila['producto_precio']."  <br>   ";
-        //$salida .= "<a href='carritoDeCompras.php?pro=$id_pro&doc=$documento&des=ag'>Agregar</a>"."  <br>   ";
-       //$salida .= "<a href='carritoDeCompras.php?pro=$id_pro&doc=$documento&des=co'>Comprar</a>";
-
-        $salida .= "<br>";
+        $id_com = $fila['id_compra'];
+        $salida .= $fila['producto_nombre']."<br>";
+        $salida .="Color: ". $fila['producto_color']."<br>";
+        $salida .="Caracteristicas: ". $fila['producto_precio']."<br>";
+        $salida .="Precio: ". $fila['producto_caracteristicas']."<br>";
+        if( $fila['estado_compra'] == "ag")
+        {
+            $salida .= "Estado del producto: el articulo esta agregado."."<br>";
+            $salida .= "<a href='actualizacion.php?des=eli&com=$id_com&doc=$documento'>Eliminar</a>"."<br>";
+        }
+        if( $fila['estado_compra'] == "co")
+        {
+            $salida .= "Estado del producto: el articulo esta comprado."."<br>";
+        }
         $salida .= "<hr>";
-
     }
     $conexion->close();
     return $salida;
+}
+/**
+ * 
+ * 
+ */
+function Compra($id_pro,$detalles,$documento)
+{
+    $salida = "";
+    require("conexion.php");
+    $sql  = "insert into tb_compra(producto_id,id_usuario,carrito_id,estado_compra) values('$id_pro','$documento','$documento','$detalles')";
+    $consulta = $conexion->query($sql);
+    if($consulta)
+    {
+        if($detalles == "ag")
+        {
+            $salida .= "Se ha agregado a tu carrito de compras"."<br>";
+            $salida .= "<a href='inicioPrincipal.php?doc=$documento'>Volver al Inicio</a>";
+        }
+        if($detalles == "co")
+        {
+            $salida .= "Se ha agregado la compra a  tu carrito de compras"."<br>";
+            $salida .= "<a href='inicioPrincipal.php?doc=$documento'>Volver al Inicio</a>";
+        }
+    }
+    $conexion->close();
+    return $salida;
+}
+/**
+ * 
+ * 
+ */
+function ElimiarCompra($id_com,$documento)
+{
+    $salida ="";
+    require("conexion.php");
+    $sql = "delete from tb_compra where id_compra='$id_com'";
+    $consulta = $conexion->query($sql);
+    if($consulta)
+    {
+        //echo "eliminado";
+        header("location: carritoDeCompras.php?doc=$documento"); 
+    }
+    $conexion->close();
+    return $salida; 
 }
 

@@ -7,7 +7,9 @@ echo MostrarNombre($documento);
 
 echo actualizarcarro($documento);
 
-?> <a href="carritoDeCompras.php?doc=<?php echo $documento; ?>&des=a">Carrito</a><br><?php
+?> <a href="carritoDeCompras.php?doc=<?php echo $documento; ?>">Carrito</a><br><br>
+    <a href="index.php">Cerrar sesion</a>
+<?php
 
 
 

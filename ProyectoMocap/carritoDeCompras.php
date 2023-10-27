@@ -1,14 +1,10 @@
 <?php 
 
 $documento = $_GET['doc'];
-$detalles = $_GET['des'];
-$producto = $_GET['pro'];
 include("funciones.php");
 
 echo MostrarNombre($documento);
+echo "Tu carrito de compras";
+echo MostrarCarrito($documento);
 
-if($detalles == "ag")
-{
-    echo AgregarProducto($producto);
-}
 
