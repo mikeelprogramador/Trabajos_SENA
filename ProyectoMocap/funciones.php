@@ -3,7 +3,7 @@
  * Esta funcion sirve para encontra una persona al momeno en el que ella inicia sesion
  * @param varchar Este primer parametro es el correo del usuario 
  * @param varchar El segundo parametro en la password del usuario
- * @return num Al retornar retona un numero si el valor del numero es 1(la persona fue encontrada)
+ * @return num Al rentornar retona un numero si el valor del numero es 1(la persona fue encontrada)
  * si el valor es 0(la persona no fue encontrada)
  */
 function EcontrarPersona($correo,$clave)
@@ -72,15 +72,15 @@ function BuscarPersona($correo,$clave)
     return $salida; 
 }
 /**
- * Funcion para mostar los productos en la pantalla sin mas detalle 
+ * Funcion para mostrar los productos en la pantalla sin mas detalle 
  * @param num El primer y unico parametro es el documento del usuario 
  * @return varchar Retorna los datos del producto y los muestra en la pantalla
  */
-function MostrarProductos($documento)
+function MostrarProductos($documento,$buscar)
 {
     $salida= ""; 
     require("conexion.php");
-    $sql ="select producto_id,producto_nombre,producto_precio from tb_productos";
+    $sql ="select producto_id,producto_nombre,producto_precio from tb_productos where producto_nombre like '%$buscar%'";
     $consulta = $conexion->query($sql);
     while($fila = $consulta->fetch_assoc())
     {
@@ -88,7 +88,7 @@ function MostrarProductos($documento)
         $salida .= "<hr>";
         $salida .= $fila['producto_nombre']."   <br>  ";
         $salida .="Precio del producto: ". $fila['producto_precio']."   <br>   ";
-        $salida .= "<a href='compra.php?pro=$id_pro&doc=$documento'>Comprar</a>";
+        $salida .= "<a href='compra.php?pro=$id_pro&doc=$documento'>Ver mas</a>";
         $salida .= "<br>";
         $salida .= "<hr>";
 
@@ -97,7 +97,7 @@ function MostrarProductos($documento)
     return $salida; 
 }
 /**
- * Funcion para detallar los porductos mas concretamnete
+ * Funcion para detallar los productos mas concretamnete
  * @param num El primer parametro es el codigo del producto
  * @param num El segundo parametro es el id del usuario
  * @return varchar Retorna los datos del producto mas detallados y los muestra en la pantalla
@@ -127,7 +127,7 @@ function DetallesProductos($id_pro,$documento)
     return $salida; 
 }
 /**
- * Funcion que verifica si el usuario tiene un carriro asignado
+ * Funcion que verifica si el usuario tiene un carrito asignado
  * @param num El documento del usuario que sirve para buscar si ya tiene un carrito asignado
  * @return num Retorna un numero su es 1 ( ya tiene un carrito ) si es 0(no tine un carrito)
  */
@@ -145,7 +145,7 @@ function VerificarCarrito($documento)
     return $salida; 
 }
 /**
- * Funcio que actualiza un el carrito dandole al usuario un carrito respectivo
+ * Funcion que actualiza un el carrito dandole al usuario un carrito respectivo
  * @param num El primer y unico parametros es el documento del usuario que tambien 
  * se le va a asignar al carrito
  * @return text no retorna nada 
@@ -193,7 +193,7 @@ function MostrarNombre($documento)
  * tambien muestra un boton de eliminar producto este boton solo aparece si el articulo 
  * es agregado al carrito
  */
-function MostrarCarrito($documento)
+function MostrarCarrito($documento,$detalles)
 {
     $salida = ""; 
     require("conexion.php");
@@ -203,7 +203,7 @@ function MostrarCarrito($documento)
     $sql .= " inner join tb_productos on tb_compra.producto_id= tb_productos.producto_id ";
     $sql .= " inner join tb_usuarios on tb_compra.id_usuario = tb_usuarios.id_usuario ";
     $sql .= " inner join tb_carrito on tb_carrito.carrito_id = tb_compra.carrito_id ";
-    $sql .= " where tb_usuarios.id_usuario = '$documento' ";
+    $sql .= " where tb_usuarios.id_usuario = '$documento' and estado_compra = '$detalles' ";
 
     $consulta = $conexion->query($sql);
     while($fila = $consulta->fetch_assoc())
@@ -218,10 +218,12 @@ function MostrarCarrito($documento)
         {
             $salida .= "Estado del producto: el articulo esta agregado."."<br>";
             $salida .= "<a href='actualizacion.php?des=eli&com=$id_com&doc=$documento'>Eliminar</a>"."<br>";
+            $salida .= "<a href='actualizacion.php?des=yes&com=$id_com&doc=$documento'>Continuar Compra</a>"."<br>";
         }
-        if( $fila['estado_compra'] == "co")
+        if ($fila['estado_compra'] == "co")
         {
-            $salida .= "Estado del producto: el articulo esta comprado."."<br>";
+            $salida .= "Estado del producto: el articulo esta comprado"."<br>";
+            $salida .= "<a href='actualizacion.php?des=fac&com=$id_com&doc=$documento'>Hacer factura</a>"."<br>";
         }
         $salida .= "<hr>";
     }
@@ -246,12 +248,12 @@ function Compra($id_pro,$detalles,$documento)
         if($detalles == "ag")
         {
             $salida .= "Se ha agregado a tu carrito de compras"."<br>";
-            $salida .= "<a href='inicioPrincipal.php?doc=$documento'>Volver al Inicio</a>";
+            $salida .= "<a href='inicioPrincipal.php?doc=$documento&bus='>Volver al Inicio</a>";
         }
         if($detalles == "co")
         {
-            $salida .= "Se ha agregado la compra a  tu carrito de compras"."<br>";
-            $salida .= "<a href='inicioPrincipal.php?doc=$documento'>Volver al Inicio</a>";
+            $salida .= "Se ha realizado la compra"."<br>";
+            $salida .= "<a href='inicioPrincipal.php?doc=$documento&bus='>Volver al Inicio</a>";
         }
     }
     $conexion->close();
@@ -276,5 +278,143 @@ function ElimiarCompra($id_com,$documento)
     }
     $conexion->close();
     return $salida; 
+}
+/**
+ * 
+ * 
+ */
+function SumarPrecios($documento,$detalles)
+{
+    $salida = ""; 
+    require("conexion.php");
+    $sql = "select sum(tb_productos.producto_precio)as total,count(*) as productos from tb_compra ";
+    $sql .= "inner join tb_productos on tb_compra.producto_id= tb_productos.producto_id ";
+    $sql .= "inner join tb_usuarios on tb_compra.id_usuario = tb_usuarios.id_usuario ";
+    $sql .= "inner join tb_carrito on tb_carrito.carrito_id = tb_compra.carrito_id ";
+    $sql .= "where tb_usuarios.id_usuario = '$documento' and estado_compra = '$detalles' ";
+    $consulta  = $conexion->query($sql);
+    while($fila = $consulta->fetch_assoc())
+    {
+        $salida .="Productos: ". $fila['productos']." ";
+        $salida.= "Total: ".$fila['total'];
+    }
+    $conexion->close();
+    return $salida;
+
+}
+/**
+ * 
+ * 
+ */
+function inforUsuario($documento)
+{
+    $salida = "";
+    require("conexion.php");
+    $sql= "select usuario_nombre,usuario_correo,usuario_contrasena from tb_usuarios where id_usuario = '$documento'";
+    $consulta = $conexion->query($sql);
+    while($fila = $consulta->fetch_assoc())
+    {
+        $salida .= "<hr>";
+        $salida .= "Nombre: ".$fila['usuario_nombre']."<br>";
+        $salida .= "Correo: ".$fila['usuario_correo']."<br>";
+        $salida .= "Contraseña: ".$fila['usuario_contrasena'];
+    }
+    $conexion->close();
+    return $salida;
+}
+/**
+ * 
+ * 
+ */
+function actualizarcompra($id_com,$documento)
+{
+    $salida = "";
+    require("conexion.php");
+    $sql  = "update tb_compra set estado_compra= 'co' where id_compra= '$id_com' and  id_usuario= '$documento'";
+    $consulta = $conexion->query($sql);
+    if($consulta)
+    {
+        $salida .= "Se ha realizado la compra"."<br>";
+        $salida .= "<a href='inicioPrincipal.php?doc=$documento&bus='>Volver al Inicio</a>";
+    }
+    $conexion->close();
+    return $salida; 
+}
+/**
+ * 
+ * 
+ * 
+ */
+function contarfacturas($id_com)
+{
+    $salida= 0; 
+    require("conexion.php");
+    $sql = "select count(id_compra) from tb_factura where id_compra='$id_com' ";
+    $consulta = $conexion->query($sql);
+    while($fila = $consulta->fetch_array())
+    {
+        $salida += $fila[0];
+    }
+    $conexion->close();
+    return $salida; 
+}
+/**
+ * 
+ * 
+ */
+function actalizarfactura($id_com)
+{
+    $salida= ""; 
+    require("conexion.php");
+    $con = contarfacturas($id_com);
+    if($con == 0)
+    {
+        $sql = "insert into tb_factura(id_compra,cantidad)values('$id_com','1')";
+        $consulta = $conexion->query($sql);
+        if($consulta)
+            {
+                $salida .= 1;
+            }else{
+                $salida .= 0;
+            }
+    $conexion->close();
+    return $salida;
+    }else{
+        $salida .= 0;
+    }
+}
+/**
+ * 
+ * 
+ */
+function mostrarfactura($documento,$id_com)
+{
+    $salida = ""; 
+    require("conexion.php");
+    $sql = "select tb_factura.factura_id,tb_usuarios.usuario_nombre,tb_productos.producto_nombre, ";
+    $sql .= "tb_productos.producto_precio,tb_factura.cantidad ";
+    $sql .= " from tb_compra ";
+    $sql .= " inner join tb_productos on tb_compra.producto_id= tb_productos.producto_id ";
+    $sql .= " inner join tb_usuarios on tb_compra.id_usuario = tb_usuarios.id_usuario ";
+    $sql .= " inner join tb_carrito on tb_carrito.carrito_id = tb_compra.carrito_id ";
+    $sql .= " inner join tb_factura on  tb_compra.id_compra = tb_factura.id_compra ";
+    $sql .= " where tb_usuarios.id_usuario = '$documento' and tb_compra.id_compra='$id_com' ";
+    //echo $sql;
+    $consulta = $conexion->query($sql);
+    while($fila = $consulta->fetch_assoc())
+    {
+        $salida.= "<hr>";
+        $salida.= $fila['factura_id']."<br>";
+        $salida.="Nombre: ". $fila['usuario_nombre']."<br>";
+        $salida.="Producto: ". $fila['producto_nombre']."<br>";
+        $salida.="Valor: ".$fila['producto_precio']."<br>";
+        $salida.="Cantidad: ". $fila['cantidad']."<br>";
+        $salida.= "<hr>";
+        $salida.= "<a href='factura.php?doc=$documento'>Regresar</a>";
+
+    }
+    $conexion->close();
+    return $salida;
+
 }
 

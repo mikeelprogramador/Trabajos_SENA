@@ -11,7 +11,7 @@ if( registrarPersona($nombreUsuario,$correo,$clave) > 0 )
     $id = BuscarPersona($correo,$clave);
     //Con la funcion BuscarPersona busca la persona por corre y password 
     //dando el id del ususario y almacenadolo en la variable id.
-    header("location: inicioPrincipal.php?doc=$id");
+    header("location: inicioPrincipal.php?doc=$id&bus=");
     //si la persona fue encontrada directamente es inviada al inicio
 }else{
     echo "Erro 502";

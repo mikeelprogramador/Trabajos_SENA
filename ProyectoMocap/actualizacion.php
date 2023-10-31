@@ -33,3 +33,21 @@ if($detalles == "eli")
     //al carrito por el usuario
 
 }
+if ($detalles == "yes")
+{
+    $documento = $_GET['doc'];//El documento del ususario extraido por URl
+    $id_com = $_GET['com'];//El codigo del la compra extraido por URl
+    echo actualizarcompra($id_com,$documento);
+}
+if($detalles == "fac")
+{
+    $documento = $_GET['doc'];//El documento del ususario extraido por URl
+    $id_com = $_GET['com'];//El codigo del la compra extraido por URl
+    if(actalizarfactura($id_com) == 1)
+    {
+        echo mostrarfactura($documento,$id_com);
+    }else
+    {
+        echo mostrarfactura($documento,$id_com);
+    }
+}
