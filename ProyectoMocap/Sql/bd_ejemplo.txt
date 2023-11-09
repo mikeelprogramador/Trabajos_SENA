@@ -1,0 +1,46 @@
+use db_ejemplo;
+describe tb_usuarios;
+select * from tb_usuarios;	
+create table tb_usuarios(
+id_usuario int auto_increment,
+usuario_nombre varchar(60)not null, 
+usuario_correo varchar(60)not null, 
+usuario_contrasena varchar(60)not null, 
+categoria_nombre varchar (20) null,
+primary key(id_usuario)
+
+);
+
+select * from tb_carrito;
+create table tb_carrito(
+carrito_id int auto_increment,
+id_usuario int not null,
+primary key(carrito_id)
+
+);
+
+select count(*) FROM tb_carrito where id_usuario=1;
+
+
+select * from tb_compra;
+create table tb_compra (
+id_compra int auto_increment,
+producto_id int not null, 
+id_usuario int not null,
+carrito_id int not null, 
+estado_compra varchar (50) not null,
+primary key (id_compra)
+
+);
+#####FormatearFormulariosDeCompra
+truncate tb_compra;
+truncate tb_factura;
+#####
+select * from tb_factura;
+create table tb_factura (
+factura_id int auto_increment,
+cantidad int not null,
+id_compra int null,
+primary key(factura_id)
+);
+

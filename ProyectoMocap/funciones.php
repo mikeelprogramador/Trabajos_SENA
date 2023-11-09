@@ -280,8 +280,10 @@ function ElimiarCompra($id_com,$documento)
     return $salida; 
 }
 /**
- * 
- * 
+ * Fucnion para sumar el presion de los porductos escojidos o comprados por el usuario
+ * @param num el numero de documento del usuario
+ * @param string un codigo para saber si el estado de la compra
+ * @return string la suma de los produstos con  el numero de ello
  */
 function SumarPrecios($documento,$detalles)
 {
@@ -303,8 +305,9 @@ function SumarPrecios($documento,$detalles)
 
 }
 /**
- * 
- * 
+ * Funcion que para la Informacion de usuario
+ * @param num el documento de la persona
+ * @return texto retorna los datos de la persona de la base de datos
  */
 function inforUsuario($documento)
 {
@@ -323,8 +326,11 @@ function inforUsuario($documento)
     return $salida;
 }
 /**
- * 
- * 
+ * Funcion que actualiza el estado de un producto por ejemplo
+ * (si el producto esta comprado o agregado)
+ * @param num el cadigo al mometo de guardar en el carrito
+ * @param num documento de la persona
+ * @return txt un texto de salida con un enlace
  */
 function actualizarcompra($id_com,$documento)
 {
@@ -341,9 +347,9 @@ function actualizarcompra($id_com,$documento)
     return $salida; 
 }
 /**
- * 
- * 
- * 
+ * Funcion para contar las facturas que hay en la base de datos
+ * @param num el cadigo al mometo de guardar en el carrito
+ * @return num el numero de compras que hay con ese codigo
  */
 function contarfacturas($id_com)
 {
@@ -359,8 +365,9 @@ function contarfacturas($id_com)
     return $salida; 
 }
 /**
- * 
- * 
+ * Funcion que actualiza la factura  en la base de datos
+ * @param num el cadigo al mometo de guardar en el carrito
+ * @return num si se agrego o actualizo 1 de lo contrario 0
  */
 function actalizarfactura($id_com)
 {
@@ -384,8 +391,10 @@ function actalizarfactura($id_com)
     }
 }
 /**
- * 
- * 
+ * Funcion para mostar las facturas realizadas por el usuario
+ * @param num el documento del usuario 
+ * @param num el cadigo al mometo de guardar en el carrito
+ * @return texto La factura del usuario 
  */
 function mostrarfactura($documento,$id_com)
 {
