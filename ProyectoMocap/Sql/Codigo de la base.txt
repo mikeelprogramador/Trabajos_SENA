@@ -2,6 +2,7 @@
 si no sabes importal la base de base de datos, puedes utilizar este codigo tenga en cuenta que el nombre
 tiene que ser ("db_ejemplo") para que todo funcione correctamente, si no desea ese nombre puede leer el archivo llamado 
 "!Recordatorio¡
+si copias este codigo la base de datos no tendra ningun contenido interno 
 
 
 use db_ejemplo;
