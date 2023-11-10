@@ -1,0 +1,4 @@
+El nombre de la base de satos tine puede ser el nombre que la persona quiera, pero tenga en cuata 
+que se recomienda que utilize el nombre ("db_ejemplo"), para que no tenga que hacer cambios en el codigo, 
+si el usuario no desea este nombre puede cambiar el nombre de la base de datos pero tenga en cuntenta que esto afectara al 
+archivo conexion.php, en el cuando tiene que corregir el nombre de la base de datos. 

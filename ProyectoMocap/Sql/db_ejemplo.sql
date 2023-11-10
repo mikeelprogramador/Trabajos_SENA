@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-11-2023 a las 17:57:06
+-- Tiempo de generación: 10-11-2023 a las 14:13:32
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -65,7 +65,14 @@ CREATE TABLE `tb_compra` (
 INSERT INTO `tb_compra` (`id_compra`, `producto_id`, `id_usuario`, `carrito_id`, `estado_compra`) VALUES
 (1, 1, 2, 2, 'co'),
 (2, 1, 2, 2, 'co'),
-(3, 3, 1, 1, 'co');
+(3, 3, 1, 1, 'co'),
+(4, 3, 1, 1, 'co'),
+(11, 1, 1, 1, 'ag'),
+(12, 2, 1, 1, 'ag'),
+(13, 6, 1, 1, 'ag'),
+(14, 8, 1, 1, 'ag'),
+(15, 9, 1, 1, 'ag'),
+(16, 7, 1, 1, 'ag');
 
 -- --------------------------------------------------------
 
@@ -86,7 +93,8 @@ CREATE TABLE `tb_factura` (
 INSERT INTO `tb_factura` (`factura_id`, `cantidad`, `id_compra`) VALUES
 (1, 1, 1),
 (2, 1, 2),
-(3, 1, 3);
+(3, 1, 3),
+(4, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -107,9 +115,23 @@ CREATE TABLE `tb_productos` (
 --
 
 INSERT INTO `tb_productos` (`producto_id`, `producto_nombre`, `producto_color`, `producto_precio`, `producto_caracteristicas`) VALUES
-(1, 'computadora', 'gris', '1000000', 'con procesador core6'),
-(2, 'zapatos', 'gris', '80000', 'hermosas zapatillas deportivas'),
-(3, 'cama', 'verde', '250000', 'base cama todo en uno oferta ');
+(1, 'Portátil Lenovo', 'Azul', '3000999', '	Portátil Lenovo Ideapad 3 14 pulgadas Intel Core i5 8GB 256GB HD'),
+(2, 'TV SAMSUNG', 'Negro', '2199900', 'TV SAMSUNG 60\" Pulgadas 152.4 cm 60BU8000 4K-UHD LED Smart TV'),
+(3, 'Xiaomi redmi 9 pro', 'Negro', '1399900', 'Capacidad de la batería 5,020 mAh, Material del cuerpo Plástico, Vidrio, Velocidad de reloj 2.3 GHz'),
+(4, 'Nokia pro max ', 'Verde', '2200000', 'Nokia pro max '),
+(5, 'PlayStation 5', 'Blanco, Negro', '3200000', 'PlayStation 5'),
+(6, 'Sofácama', 'Lino Gris', '899900', 'Sofácama Tous 3 Posiciones Tela Lino Gris + Cojines'),
+(7, 'Lavadora secadora', 'Gris', ' 2449000', 'Lavadora secadora automática Samsung WD5000T WD11T inverter gris 11kg 120 V'),
+(8, 'Comedor', 'Cedro cafe madera', '990000', 'Comedor De 4 O 6 Puestos Macizo En Cedro, Variedad De Tonos'),
+(9, '	Zapatillas de Voleybal', 'Blanco y Azul', '319000', 'Género: Hombre, Estilo: Deportivo, Marca: Asics, recomendados: padell,squash,Tenis,voleybal'),
+(10, 'Cama', 'Blanco', '999900', 'Cama 1.40 Nebraska, Miel Y Blanco'),
+(11, 'Balon Baloncesto', 'Negro y Dorado', '224990', 'Balon Baloncesto Everyday All Court 8p-negro, Confección en goma, Tamaño de Balón #7'),
+(12, 'Pelota de fútbol', 'Blanco', '294900', 'Pelota de fútbol Golty Origen nº 5 color blanco Cosido a Mano'),
+(13, 'Ajedrez', 'Blanco y Negro', '304999', 'Juego de mesa Wizard\'s chess set The Noble Collection NN7580'),
+(14, 'Blusa', 'Morado', '42000', 'Blusa Para Mujer, Descuento el 10%'),
+(15, 'Camisa', 'Blanca', '109000', 'CAMISA MC 100% ALGODON HOMBRE'),
+(16, 'Vestido', 'Azul', '39990', 'Vestido Niña Yamp -20%'),
+(17, 'Camiseta', 'Verde', '65900', 'Camiseta Basicool Artichoke Green 0CTAG106');
 
 -- --------------------------------------------------------
 
@@ -185,13 +207,13 @@ ALTER TABLE `tb_carrito`
 -- AUTO_INCREMENT de la tabla `tb_compra`
 --
 ALTER TABLE `tb_compra`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_factura`
 --
 ALTER TABLE `tb_factura`
-  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_usuarios`
